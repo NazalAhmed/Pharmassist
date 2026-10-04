@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Prescription — Token {{ prescription.patient.token_number }}
+    </title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <style>
+        body {
+            background: #f4f8fb;
+            color: #172033;
+        }
+
+        /* =========================
+           TOP NAVBAR
+        ========================= */
+
+        .topbar {
+            background: linear-gradient(135deg, #087f8c, #0b9b8f);
+            box-shadow: 0 4px 18px rgba(8, 127, 140, 0.15);
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .dashboard-card {
+            border: 0;
+            border-radius: 18px;
+            box-shadow: 0 7px 28px rgba(20, 40, 60, 0.07);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .token-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 15px;
+            background: #e5f7f5;
+            color: #087f8c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+        .token-badge {
+            background: #e5f7f5;
+            color: #087f8c;
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 13px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .status-completed {
+            background: #fff4e5;
+            color: #b45309;
+        }
+
+        .status-verified {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-failed {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status-default {
+            background: #eef2f6;
+            color: #475569;
+        }
+
+        /* =========================
+           INFO CARDS
+        ========================= */
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #e5f7f5;
+            color: #087f8c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .info-label {
+            color: #8a95a3;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .info-value {
+            color: #172033;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 3px;
+            word-break: break-word;
+        }
+
+        .info-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eef1f4;
+        }
+
+        .info-item:last-child {
+            border-bottom: 0;
+        }
+
+        /* =========================
+           PRESCRIPTION IMAGE
+        ========================= */
+
+        .original-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 130px;
+            border: 2px dashed #cbd5df;
+            border-radius: 14px;
+            color: #087f8c;
+            background: #f8fbfc;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .original-link:hover {
+            border-color: #0b9b8f;
+            background: #eefaf8;
+            color: #066e79;
+        }
+
+        .original-link i {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           MEDICINES TABLE
+        ========================= */
+
+        .medicine-table {
+            min-width: 1350px;
+            margin-bottom: 0;
+        }
+
+        .medicine-table thead th {
+            background: #f8fafc;
+            color: #667085;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            font-weight: 700;
+            padding: 15px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        .medicine-table tbody td {
+            padding: 16px 12px;
+            vertical-align: middle;
+            border-color: #eef1f4;
+            font-size: 13px;
+        }
+
+        .medicine-table tbody tr:hover {
+            background: #fbfdfd;
+        }
+
+        .medicine-name {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .ocr-text {
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .matched-medicine {
+            color: #087f8c;
+            font-weight: 700;
+        }
+
+        .badge-soft {
+            padding: 6px 10px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .stock-available {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .stock-unavailable {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .no-match {
+            background: #fff4e5;
+            color: #b45309;
+        }
+
+        .verified-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #15803d;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .not-verified-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Confidence */
+
+        .confidence-wrapper {
+            min-width: 100px;
+        }
+
+        .confidence-wrapper .progress {
+            height: 6px;
+            background: #e9eef3;
+            border-radius: 10px;
+        }
+
+        .confidence-wrapper .progress-bar {
+            background: #0b9b8f;
+            border-radius: 10px;
+        }
+
+        .confidence-medium .progress-bar {
+            background: #f59e0b;
+        }
+
+        .confidence-low .progress-bar {
+            background: #ef4444;
+        }
+
+        .confidence-high-text {
+            color: #15803d;
+        }
+
+        .confidence-medium-text {
+            color: #b45309;
+        }
+
+        .confidence-low-text {
+            color: #b91c1c;
+        }
+
+        /* Alternatives */
+
+        .alternatives-list {
+            padding-left: 18px;
+            margin: 0;
+        }
+
+        .alternatives-list li {
+            margin-bottom: 5px;
+        }
+
+        /* =========================
+           OCR
+        ========================= */
+
+        .ocr-details {
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            background: white;
+        }
+
+        .ocr-details summary {
+            cursor: pointer;
+            padding: 17px 20px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .ocr-content {
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .action-card {
+            border: 0;
+            border-radius: 18px;
+            box-shadow: 0 7px 28px rgba(20, 40, 60, 0.07);
+        }
+
+        .btn-ready {
+            background: linear-gradient(135deg, #087f8c, #0b9b8f);
+            border: 0;
+            border-radius: 11px;
+            padding: 12px 22px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .btn-ready:hover {
+            background: linear-gradient(135deg, #066e79, #088d82);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .ready-card {
+            border: 1px solid #bbf7d0;
+            background: #f0fdf4;
+            border-radius: 16px;
+        }
+
+        .failed-card {
+            border: 1px solid #fecaca;
+            background: #fef2f2;
+            border-radius: 16px;
+        }
+
+        .ready-icon,
+        .failed-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .ready-icon {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .failed-icon {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 767px) {
+
+            .page-title {
+                font-size: 26px;
+            }
+
+            .medicine-table {
+                min-width: 1350px;
+            }
+
+            .table-responsive {
+                border-radius: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<nav class="navbar topbar navbar-dark">
+
+    <div class="container py-2">
+
+        <a
+            href="{% url 'staff_queue' %}"
+            class="navbar-brand d-flex align-items-center fw-bold"
+        >
+
+            <div class="brand-icon me-2">
+                <i class="bi bi-capsule-pill"></i>
+            </div>
+
+            Pharmacy Management
+
+        </a>
+
+
+        <a
+            href="{% url 'staff_queue' %}"
+            class="btn btn-sm btn-light text-dark fw-semibold px-3"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Queue
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main class="container py-4 py-lg-5">
+
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="d-flex flex-column flex-md-row
+                align-items-md-center
+                justify-content-between gap-3 mb-4">
+
+        <div class="d-flex align-items-center">
+
+            <div class="token-icon me-3">
+                <i class="bi bi-receipt"></i>
+            </div>
+
+            <div>
+
+                <div class="text-secondary small mb-1">
+                    Prescription
+                </div>
+
+                <h1 class="page-title fw-bold mb-1">
+                    Token #{{ prescription.patient.token_number }}
+                </h1>
+
+                <div class="text-secondary small">
+                    <i class="bi bi-clock me-1"></i>
+                    Uploaded {{ prescription.created_at }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div>
+
+            {% if prescription.status == "completed" %}
+
+                <span class="status-badge status-completed">
+                    <i class="bi bi-clock"></i>
+                    {{ prescription.status }}
+                </span>
+
+            {% elif prescription.status == "verified" %}
+
+                <span class="status-badge status-verified">
+                    <i class="bi bi-check-circle"></i>
+                    {{ prescription.status }}
+                </span>
+
+            {% elif prescription.status == "failed" %}
+
+                <span class="status-badge status-failed">
+                    <i class="bi bi-exclamation-circle"></i>
+                    {{ prescription.status }}
+                </span>
+
+            {% else %}
+
+                <span class="status-badge status-default">
+                    {{ prescription.status }}
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Back -->
+
+    <div class="mb-4">
+
+        <a
+            href="{% url 'staff_queue' %}"
+            class="text-decoration-none text-secondary fw-semibold"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to prescription queue
+        </a>
+
+    </div>
+
+
+
+    <!-- =================================================
+         PATIENT + PRESCRIPTION DETAILS
+    ================================================== -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- PATIENT -->
+
+        <div class="col-lg-6">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <div class="section-icon me-3">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div>
+                            <h4 class="fw-bold mb-1">
+                                Patient
+                            </h4>
+
+                            <p class="text-secondary small mb-0">
+                                Patient information
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Name
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.patient.name|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Token
+                                </div>
+
+                                <div class="info-value">
+                                    <span class="token-badge">
+                                        #{{ prescription.patient.token_number }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Phone
+                                </div>
+
+                                <div class="info-value">
+                                    <i class="bi bi-telephone me-1 text-secondary"></i>
+                                    {{ prescription.patient.phone|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Age
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.patient.age|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-12">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Address
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.patient.address|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRESCRIPTION DETAILS -->
+
+        <div class="col-lg-6">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <div class="section-icon me-3">
+                            <i class="bi bi-file-medical"></i>
+                        </div>
+
+                        <div>
+                            <h4 class="fw-bold mb-1">
+                                Prescription Details
+                            </h4>
+
+                            <p class="text-secondary small mb-0">
+                                Prescription metadata
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Doctor
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.doctor_name|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Hospital
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.hospital_name|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    OP Number
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.op_number|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Prescription Date
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.prescription_date|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Source
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.source|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-6">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Status
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.status }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-12">
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Diagnosis
+                                </div>
+
+                                <div class="info-value">
+                                    {{ prescription.diagnosis|default:"—" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         ORIGINAL PRESCRIPTION
+    ================================================== -->
+
+    <div class="card dashboard-card mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center g-4">
+
+                <div class="col-md-8">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="section-icon me-3">
+                            <i class="bi bi-image"></i>
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Original Prescription
+                            </h5>
+
+                            <p class="text-secondary small mb-0">
+                                View the original uploaded prescription image
+                                for manual verification.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <a
+                        href="{{ prescription.prescription_file.url }}"
+                        target="_blank"
+                        class="original-link text-center"
+                    >
+
+                        <div>
+
+                            <i class="bi bi-box-arrow-up-right"></i>
+
+                            <div class="fw-semibold">
+                                View Original Image
+                            </div>
+
+                            <small class="text-secondary">
+                                Opens in a new tab
+                            </small>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         MEDICINES
+    ================================================== -->
+
+    <div class="card dashboard-card mb-4">
+
+        <div class="card-header bg-white border-0 p-4 pb-2">
+
+            <div class="d-flex align-items-center justify-content-between">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="section-icon me-3">
+                        <i class="bi bi-capsule-pill"></i>
+                    </div>
+
+                    <div>
+
+                        <h4 class="fw-bold mb-1">
+                            Medicines
+                        </h4>
+
+                        <p class="text-secondary small mb-0">
+                            OCR results, medicine matching and verification
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% if medicines %}
+                    <span class="badge bg-light text-dark border px-3 py-2">
+                        {{ medicines|length }} medicine{{ medicines|length|pluralize }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table medicine-table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>As Written (OCR)</th>
+
+                            <th>Generic / Composition</th>
+
+                            <th>Matched Brand</th>
+
+                            <th>Matched Generic</th>
+
+                            <th>Dosage Form</th>
+
+                            <th>Dosage</th>
+
+                            <th>Duration</th>
+
+                            <th>Quantity</th>
+
+                            <th>Confidence</th>
+
+                            <th>Stock</th>
+
+                            <th>Alternatives</th>
+
+                            <th>Verified</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for m in medicines %}
+
+                        <tr>
+
+                            <!-- Number -->
+
+                            <td class="fw-bold text-secondary">
+                                {{ forloop.counter }}
+                            </td>
+
+
+                            <!-- OCR Name -->
+
+                            <td>
+                                <span class="medicine-name">
+                                    {{ m.extracted_name }}
+                                </span>
+                            </td>
+
+
+                            <!-- Generic OCR -->
+
+                            <td>
+                                <span class="ocr-text">
+                                    {{ m.generic_name|default:"—" }}
+                                </span>
+                            </td>
+
+
+                            <!-- Matched Brand -->
+
+                            <td>
+
+                                {% if m.medicine %}
+
+                                    <span class="matched-medicine">
+                                        {{ m.medicine.medicine_name }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge-soft no-match">
+                                        <i class="bi bi-question-circle me-1"></i>
+                                        No match found
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Matched Generic -->
+
+                            <td>
+                                {{ m.medicine.generic_name|default:"—" }}
+                            </td>
+
+
+                            <!-- Dosage Form -->
+
+                            <td>
+                                {{ m.medicine.dosage_form|default:"—" }}
+                            </td>
+
+
+                            <!-- Frequency -->
+
+                            <td>
+
+                                {% if m.frequency %}
+
+                                    <span class="badge bg-light text-dark border">
+                                        {{ m.frequency }}
+                                    </span>
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Duration -->
+
+                            <td>
+                                {% if m.duration %}
+                                    {{ m.duration }} days
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+
+                            <!-- Quantity -->
+
+                            <td class="fw-semibold">
+                                {{ m.quantity|default:"—" }}
+                            </td>
+
+
+                            <!-- Confidence -->
+
+                            <td>
+
+                                {% if m.confidence_score >= 85 %}
+
+                                    <div class="confidence-wrapper">
+
+                                        <div class="d-flex justify-content-between mb-1">
+
+                                            <small class="fw-bold confidence-high-text">
+                                                {{ m.confidence_score|floatformat:0 }}%
+                                            </small>
+
+                                        </div>
+
+                                        <div class="progress">
+                                            <div
+                                                class="progress-bar"
+                                                style="width: {{ m.confidence_score }}%">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                {% elif m.confidence_score >= 60 %}
+
+                                    <div class="confidence-wrapper confidence-medium">
+
+                                        <div class="d-flex justify-content-between mb-1">
+
+                                            <small class="fw-bold confidence-medium-text">
+                                                {{ m.confidence_score|floatformat:0 }}%
+                                            </small>
+
+                                        </div>
+
+                                        <div class="progress">
+                                            <div
+                                                class="progress-bar"
+                                                style="width: {{ m.confidence_score }}%">
+                                            </div>
+                                        </div>
+
+                                        <small class="text-warning">
+                                            Verify
+                                        </small>
+
+                                    </div>
+
+                                {% else %}
+
+                                    <div class="confidence-wrapper confidence-low">
+
+                                        <div class="d-flex justify-content-between mb-1">
+
+                                            <small class="fw-bold confidence-low-text">
+                                                {{ m.confidence_score|floatformat:0 }}%
+                                            </small>
+
+                                        </div>
+
+                                        <div class="progress">
+                                            <div
+                                                class="progress-bar"
+                                                style="width: {{ m.confidence_score }}%">
+                                            </div>
+                                        </div>
+
+                                        <small class="text-danger">
+                                            Verify
+                                        </small>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Stock -->
+
+                            <td>
+
+                                {% if m.medicine %}
+
+                                    {% if m.medicine.available %}
+
+                                        <span class="badge-soft stock-available">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            In stock
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge-soft stock-unavailable">
+                                            <i class="bi bi-x-circle me-1"></i>
+                                            Out of stock
+                                        </span>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Alternatives -->
+
+                            <td>
+
+                                {% if m.medicine and not m.medicine.available %}
+
+                                    <ul class="alternatives-list">
+
+                                        {% for alt in m.medicine.alternatives.all %}
+
+                                            <li>
+
+                                                <strong>
+                                                    {{ alt.alternative_medicine.medicine_name }}
+                                                </strong>
+
+                                                {% if alt.alternative_medicine.available %}
+
+                                                    <span class="badge-soft stock-available">
+                                                        Available
+                                                    </span>
+
+                                                {% else %}
+
+                                                    <span class="badge-soft stock-unavailable">
+                                                        Out of stock
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </li>
+
+                                        {% empty %}
+
+                                            <li class="text-secondary">
+                                                None listed
+                                            </li>
+
+                                        {% endfor %}
+
+                                    </ul>
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Verified -->
+
+                            <td class="text-center">
+
+                                {% if m.pharmacist_verified %}
+
+                                    <span
+                                        class="verified-badge"
+                                        title="Verified by pharmacist"
+                                    >
+                                        <i class="bi bi-check-lg"></i>
+                                    </span>
+
+                                {% else %}
+
+                                    <span
+                                        class="not-verified-badge"
+                                        title="Not verified"
+                                    >
+                                        <i class="bi bi-dash"></i>
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="13">
+
+                                <div class="text-center py-5">
+
+                                    <div class="section-icon mx-auto mb-3">
+                                        <i class="bi bi-capsule"></i>
+                                    </div>
+
+                                    <h5 class="fw-bold">
+                                        No medicines extracted
+                                    </h5>
+
+                                    <p class="text-secondary mb-0">
+                                        No medicine information was found
+                                        in the prescription.
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="text-secondary small mt-3">
+                <i class="bi bi-arrows-expand me-1"></i>
+                Scroll horizontally to view all medicine details.
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         RAW OCR
+    ================================================== -->
+
+    <details class="ocr-details mb-4">
+
+        <summary>
+            <i class="bi bi-file-text me-2"></i>
+            Raw OCR Text
+            <span class="text-secondary fw-normal ms-1">
+                (for troubleshooting)
+            </span>
+        </summary>
+
+        <div class="ocr-content">
+{{ prescription.extracted_text }}
+        </div>
+
+    </details>
+
+
+
+    <!-- =================================================
+         ACTIONS
+    ================================================== -->
+
+    {% if prescription.status == "completed" %}
+
+        <div class="card action-card mb-4">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex flex-column flex-md-row
+                            align-items-md-center
+                            justify-content-between gap-3">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="section-icon me-3">
+                            <i class="bi bi-clipboard-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Ready to verify?
+                            </h5>
+
+                            <p class="text-secondary small mb-0">
+                                Review the extracted medicines and confirm
+                                that everything is correct before preparing
+                                the order.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="mark_ready"
+                        >
+
+                        <button
+                            type="submit"
+                            class="btn btn-ready"
+                        >
+                            <i class="bi bi-check-circle me-2"></i>
+                            Mark Medicines Ready
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    {% elif prescription.status == "verified" %}
+
+        <div class="ready-card p-4 mb-4">
+
+            <div class="d-flex align-items-center">
+
+                <div class="ready-icon me-3">
+                    <i class="bi bi-check-lg"></i>
+                </div>
+
+                <div>
+
+                    <h5 class="fw-bold text-success mb-1">
+                        Ready for Pickup
+                    </h5>
+
+                    <p class="text-success-emphasis small mb-0">
+                        This prescription has been verified and the
+                        medicines are ready for the patient.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    {% elif prescription.status == "failed" %}
+
+        <div class="failed-card p-4 mb-4">
+
+            <div class="d-flex align-items-center">
+
+                <div class="failed-icon me-3">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+
+                <div>
+
+                    <h5 class="fw-bold text-danger mb-1">
+                        Processing Failed
+                    </h5>
+
+                    <p class="text-danger-emphasis small mb-0">
+                        Prescription processing failed. Review the raw
+                        OCR text above for troubleshooting.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <div class="text-center py-3">
+
+        <a
+            href="{% url 'staff_queue' %}"
+            class="text-decoration-none text-secondary fw-semibold"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Return to Prescription Queue
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>
